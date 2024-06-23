@@ -4,6 +4,9 @@ public class Dice {
     private static final Random RANDOM = new Random();
 
     public static int roll() {
-        return RANDOM.nextInt(11) + 2; // Dice rolls between 2 and 12
+        int die1 = RANDOM.nextInt(6) + 1; // Roll first die (1-6)
+        int die2 = RANDOM.nextInt(6) + 1; // Roll second die (1-6)
+        int sum = die1 + die2;
+        return sum;
     }
 }
