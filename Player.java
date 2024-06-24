@@ -11,7 +11,7 @@ public class Player {
     private int armorDefense = 0;
     private int armorDurability = 0;
     // private final List<String> bag = new ArrayList<>();
-    private final List<String> bag = new ArrayList<>(List.of("Test Weapon"));
+    private final List<String> bag = new ArrayList<>(List.of("Test Weapon", "Test Armor"));
 
 
     public int getHp() {
