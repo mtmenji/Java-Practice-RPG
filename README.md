@@ -12,7 +12,8 @@ I use VS Code as my development environment and Java as my programming language.
 - [W3Schools](https://www.w3schools.com/java/default.asp)
 
 # Future Work
-- Add functionality to the equip menu item.
-- Add functionality to the bag discard menu item.
+- Create functionality to add a weapon, armor, or item to the bag (it's currently being hardcoded).
+- Remove "Discard a bag item" and replace it "Use Item".
 - Add more weapons/armor.
+- Make Room 1 it's own level class? So future rooms don't clutter main.
 - Continue adding the other two rooms and enemies.
