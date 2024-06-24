@@ -10,7 +10,9 @@ public class Player {
     private String armor = "";
     private int armorDefense = 0;
     private int armorDurability = 0;
-    private final List<String> bag = new ArrayList<>();
+    // private final List<String> bag = new ArrayList<>();
+    private final List<String> bag = new ArrayList<>(List.of("Test Weapon"));
+
 
     public int getHp() {
         return hp;
@@ -52,29 +54,84 @@ public class Player {
         this.armorDurability = durability;
     }
 
-    public void equipItem(Scanner scanner) {
+    public boolean isBagEmpty() {
+        return bag.isEmpty();
+    }
+
+    public int equipItem(Scanner scanner) {
+        if (bag.isEmpty()) {
+            return 0; // Return 0 to indicate no valid choice was made
+        }
+
+        System.out.println("Bag items: " + bag);
         System.out.println("Equip Item - Options:");
         System.out.println("1. Equip a weapon.");
         System.out.println("2. Equip armor.");
+        System.out.println("3. Cancel");
         int choice = scanner.nextInt();
+    
         if (choice == 1) {
-            if (!weapon.isEmpty()) {
-                System.out.println("You already have a weapon equipped. Replace it? (y/n)");
-                if (scanner.next().equalsIgnoreCase("n")) {
-                    return;
+            List<String> weapons = new ArrayList<>();
+            for (String item : bag) {
+                if (item.contains("Weapon")) {
+                    weapons.add(item);
                 }
             }
-            equipWeapon("Blunt Sword", 2, 2);
-            System.out.println("Equipped Blunt Sword.");
+    
+            if (!weapons.isEmpty()) {
+                System.out.println("Select a weapon to equip:");
+                for (int i = 0; i < weapons.size(); i++) {
+                    System.out.println((i + 1) + ". " + weapons.get(i));
+                }
+                int weaponChoice = scanner.nextInt() - 1;
+                if (weaponChoice >= 0 && weaponChoice < weapons.size()) {
+                    String selectedWeapon = weapons.get(weaponChoice);
+                    equipWeapon("Blunt Sword", 2, 2); // Replace with actual weapon stats based on selectedWeapon
+                    System.out.println("Equipped " + selectedWeapon + ".");
+                    bag.remove(selectedWeapon);
+                    return 1; // Return 1 to indicate weapon equipped
+                } else {
+                    System.out.println("Invalid choice.");
+                    return 0; // Return 0 for invalid choice
+                }
+            } else {
+                System.out.println("No weapons available to equip.");
+                return 0; // Return 0 for no weapons available
+            }
         } else if (choice == 2) {
-            if (!armor.isEmpty()) {
-                System.out.println("You already have armor equipped. Replace it? (y/n)");
-                if (scanner.next().equalsIgnoreCase("n")) {
-                    return;
+            List<String> armors = new ArrayList<>();
+            for (String item : bag) {
+                if (item.contains("Armor")) {
+                    armors.add(item);
                 }
             }
-            equipArmor("Leather Armor", 2, 2);
-            System.out.println("Equipped Leather Armor.");
+    
+            if (!armors.isEmpty()) {
+                System.out.println("Select armor to equip:");
+                for (int i = 0; i < armors.size(); i++) {
+                    System.out.println((i + 1) + ". " + armors.get(i));
+                }
+                int armorChoice = scanner.nextInt() - 1;
+                if (armorChoice >= 0 && armorChoice < armors.size()) {
+                    String selectedArmor = armors.get(armorChoice);
+                    equipArmor("Leather Armor", 2, 2); // Replace with actual armor stats based on selectedArmor
+                    System.out.println("Equipped " + selectedArmor + ".");
+                    bag.remove(selectedArmor);
+                    return 2; // Return 2 to indicate armor equipped
+                } else {
+                    System.out.println("Invalid choice.");
+                    return 0; // Return 0 for invalid choice
+                }
+            } else {
+                System.out.println("No armor available to equip.");
+                return 0; // Return 0 for no armor available
+            }
+        } else if (choice == 3) {
+            System.out.println("Equip item cancelled.");
+            return 3; // Return 3 to indicate cancel
+        } else {
+            System.out.println("Invalid choice.");
+            return 0; // Return 0 for invalid choice
         }
     }
 
@@ -106,10 +163,10 @@ public class Player {
             case 12 -> 5;
             default -> 0;
         };
-    
+
         int totalDamage = normalDamage;
         boolean weaponBroke = false;
-    
+
         if (normalDamage > 0) {
             totalDamage += weaponAttack;
             if (weaponDurability > 0) {
@@ -124,18 +181,18 @@ public class Player {
             System.out.println("Your attack missed!");
             return;
         }
-    
+
         String attackMessage = "You attacked the enemy for " + totalDamage + " damage.";
-    
+
         if (!weapon.isEmpty()) {
             attackMessage = "Your attack of " + normalDamage;
             attackMessage += " combined with your " + weapon + " attack of " + weaponAttack;
             attackMessage += " deals a total of " + totalDamage + " damage.";
         }
-    
+
         enemy.decreaseHp(totalDamage);
         System.out.println(attackMessage);
-    
+
         if (weaponBroke) {
             System.out.println("Your weapon broke!");
         }

@@ -5,6 +5,7 @@ public class RPGGame {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
         Player player = new Player();
+
         List<Enemy> enemies = List.of(
                 new Enemy("Grunt 1", 10),
                 new Enemy("Grunt 2", 10),
@@ -19,6 +20,8 @@ public class RPGGame {
 
         for (int i = 0; i < enemies.size(); i++) {
             Enemy enemy = enemies.get(i);
+            boolean equipCanceled = false; // Flag to track if equipItem was canceled
+
             while (enemy.getHp() > 0 && player.getHp() > 0) {
                 Utils.clearConsole();
                 displayStatus(player, enemy, i + 1);
@@ -27,8 +30,19 @@ public class RPGGame {
                 int choice = scanner.nextInt();
                 switch (choice) {
                     case 1:
-                        player.equipItem(scanner);
-                        break;
+                        if (!player.isBagEmpty()) {
+                            int equipResult = player.equipItem(scanner);
+                            if (equipResult == 3) {
+                                System.out.println("TEST1");
+                                equipCanceled = true;
+                                continue;
+                            }
+                            // Handle other equipItem results as needed
+                            break;
+                        } else {
+                            System.out.println("Your bag is empty. Gather some items first.");
+                            continue;
+                        }
                     case 2:
                         player.discardItem(scanner);
                         break;
