@@ -33,7 +33,6 @@ public class RPGGame {
                         if (!player.isBagEmpty()) {
                             int equipResult = player.equipItem(scanner);
                             if (equipResult == 3) {
-                                System.out.println("TEST1");
                                 equipCanceled = true;
                                 continue;
                             }
